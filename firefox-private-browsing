@@ -1,13 +1,21 @@
-#!/bin/sh -e
-#
+#!/bin/sh
+set -euf
+
+##
 # Firefox private browsing
 #
 # https://nullprogram.com/blog/2018/09/06/
 #
 # Credit: Chris Wellons (wellons@nullprogram.com)
 #
+# If you use macOS, then the typical command path is:
+# /Applications/Firefox.app/Contents/MacOS/firefox
+##
+
+firefox="${FIREFOX:-firefox}"
 DIR="${XDG_CACHE_HOME:-$HOME/.cache}"
 mkdir -p -- "$DIR"
 TEMP="$(mktemp -d -- "$DIR/firefox-XXXXXX")"
+echo "TEMP:$TEMP"
 trap "rm -rf -- '$TEMP'" INT TERM EXIT
-firefox -profile "$TEMP" -no-remote "$@"
+"$firefox" -profile "$TEMP" -no-remote "$@"
